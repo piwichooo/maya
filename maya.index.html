@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Misión Especial: Maya ❤️</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Press Start 2P & VT323 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #0d0b14;
+            --bg-panel: #181425;
+            --neon-pink: #ff2a85;
+            --neon-cyan: #00f0ff;
+            --neon-gold: #ffd700;
+            --neon-green: #00ff66;
+        }
+
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #ffffff;
+            font-family: 'VT323', monospace;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            height: 100dvh;
+            width: 100vw;
+            position: relative;
+        }
+
+        .font-pixel-title {
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        .font-pixel-body {
+            font-family: 'VT323', monospace;
+        }
+
+        /* Efecto de líneas de televisión retro (CRT Scanlines) */
+        .crt-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100dvh;
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%, 
+                rgba(0, 0, 0, 0.35) 50%
+            );
+            background-size: 100% 4px;
+            z-index: 40;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        /* Viñeta oscura alrededor de la pantalla */
+        .crt-vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100dvh;
+            box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.85);
+            z-index: 41;
+            pointer-events: none;
+        }
+
+        /* Bordes estilo 8-bit */
+        .pixel-box {
+            background-color: var(--bg-panel);
+            border: 4px solid #ffffff;
+            box-shadow: 
+                0 0 0 4px var(--bg-dark),
+                0 0 20px rgba(255, 42, 133, 0.3),
+                inset 0 0 15px rgba(0, 0, 0, 0.6);
+            position: relative;
+        }
+
+        .pixel-box-cyan {
+            background-color: var(--bg-panel);
+            border: 4px solid var(--neon-cyan);
+            box-shadow: 
+                0 0 0 4px var(--bg-dark),
+                0 0 20px rgba(0, 240, 255, 0.25),
+                inset 0 0 15px rgba(0, 0, 0, 0.6);
+        }
+
+        .pixel-box-gold {
+            background-color: var(--bg-panel);
+            border: 4px solid var(--neon-gold);
+            box-shadow: 
+                0 0 0 4px var(--bg-dark),
+                0 0 30px rgba(255, 215, 0, 0.35),
+                inset 0 0 20px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Botones Retro 8-bit */
+        .pixel-btn {
+            font-family: 'Press Start 2P', cursive;
+            text-transform: uppercase;
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 4px solid #fff;
+            box-shadow: 0 6px 0 #000, 0 0 15px rgba(255, 42, 133, 0.5);
+            transition: transform 0.1s, box-shadow 0.1s, background-color 0.2s;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .pixel-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #000;
+        }
+
+        .pixel-btn-pink {
+            background-color: var(--neon-pink);
+            color: #fff;
+            text-shadow: 2px 2px 0px #000;
+        }
+
+        .pixel-btn-pink:hover {
+            background-color: #ff4796;
+            box-shadow: 0 6px 0 #000, 0 0 25px rgba(255, 42, 133, 0.9);
+        }
+
+        .pixel-btn-cyan {
+            background-color: #008899;
+            border-color: var(--neon-cyan);
+            color: #fff;
+            text-shadow: 2px 2px 0px #000;
+            box-shadow: 0 6px 0 #003344, 0 0 15px rgba(0, 240, 255, 0.4);
+        }
+
+        .pixel-btn-cyan:hover {
+            background-color: #00acc1;
+            box-shadow: 0 6px 0 #003344, 0 0 25px rgba(0, 240, 255, 0.8);
+        }
+
+        .pixel-btn-green {
+            background-color: #00b347;
+            border-color: var(--neon-green);
+            color: #fff;
+            text-shadow: 2px 2px 0px #000;
+            box-shadow: 0 6px 0 #004d1f, 0 0 20px rgba(0, 255, 102, 0.6);
+        }
+
+        .pixel-btn-green:hover {
+            background-color: #00cc52;
+            box-shadow: 0 6px 0 #004d1f, 0 0 30px rgba(0, 255, 102, 0.9);
+        }
+
+        .pixel-btn-no {
+            background-color: #3a3546;
+            border-color: #8c859b;
+            color: #d1cbe0;
+            text-shadow: 2px 2px 0px #000;
+            box-shadow: 0 6px 0 #1a1721;
+        }
+
+        /* Animaciones */
+        @keyframes pulse-heart {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 12px rgba(255, 42, 133, 0.8)); }
+            50% { transform: scale(1.12); filter: drop-shadow(0 0 22px rgba(255, 42, 133, 1)); }
+        }
+
+        .animate-heart {
+            animation: pulse-heart 1.2s infinite ease-in-out;
+        }
+
+        @keyframes float-up {
+            0% { opacity: 1; transform: translateY(0) scale(0.9); }
+            100% { opacity: 0; transform: translateY(-45px) scale(1.15); }
+        }
+
+        .combat-text {
+            position: fixed;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
+            pointer-events: none;
+            z-index: 60;
+            text-shadow: 2px 2px 0 #000, -1px -1px 0 #000;
+            animation: float-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes blink-slow {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0.2; }
+        }
+
+        .blink-text {
+            animation: blink-slow 1.2s infinite;
+        }
+
+        /* Sombras de texto brillantes */
+        .glow-pink {
+            text-shadow: 3px 3px 0px #000, 0 0 12px rgba(255, 42, 133, 0.8);
+        }
+        .glow-cyan {
+            text-shadow: 2px 2px 0px #000, 0 0 10px rgba(0, 240, 255, 0.8);
+        }
+        .glow-gold {
+            text-shadow: 3px 3px 0px #000, 0 0 15px rgba(255, 215, 0, 0.9);
+        }
+
+        /* Barra de progreso retro */
+        .hp-bar-bg {
+            background: #09070d;
+            border: 2px solid #fff;
+            height: 16px;
+            padding: 2px;
+        }
+        .hp-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff2a85, #ff7eb3);
+            transition: width 0.4s ease-out;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center select-none">
+
+    <!-- Efecto CRT Retro -->
+    <div class="crt-overlay"></div>
+    <div class="crt-vignette"></div>
+
+    <!-- Canvas de Fondo (Estrellas Pixeladas) -->
+    <canvas id="bgCanvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+    <!-- Canvas de Celebración (Confeti y Corazones Pixel) -->
+    <canvas id="fxCanvas" class="fixed inset-0 pointer-events-none z-30"></canvas>
+
+    <!-- Barra Superior (HUD de Juego) -->
+    <header class="fixed top-0 left-0 w-full p-3 sm:p-5 flex justify-between items-center z-50 pointer-events-none">
+        <div class="flex items-center space-x-2 bg-[#181425]/90 border-2 border-[#ff2a85] px-3 py-1.5 shadow-lg pointer-events-auto">
+            <span class="text-[#ff2a85] text-lg animate-pulse">❤</span>
+            <span class="font-pixel-title text-[10px] sm:text-xs text-white tracking-wider">P1: MAYA</span>
+        </div>
+
+        <button id="soundToggleBtn" onclick="toggleAudio()" class="pointer-events-auto bg-[#181425]/90 border-2 border-[#00f0ff] px-3 py-1.5 text-[#00f0ff] font-pixel-title text-[10px] sm:text-xs hover:bg-[#00f0ff]/20 transition flex items-center gap-2 shadow-lg">
+            <span id="soundIcon">🔊</span>
+            <span id="soundLabel" class="hidden sm:inline">SFX: ON</span>
+        </button>
+    </header>
+
+    <!-- Contenedor Principal -->
+    <main class="relative z-20 w-full max-w-xl mx-auto px-4 flex flex-col items-center justify-center min-h-[85dvh]">
+
+        <!-- ==========================================
+             PANTALLA 1: INICIO (START SCREEN)
+             ========================================== -->
+        <section id="screen-start" class="w-full flex flex-col items-center text-center space-y-6 py-6">
+            <div class="inline-block bg-[#181425] border-2 border-[#00f0ff] px-3 py-1 text-[#00f0ff] font-pixel-title text-[10px] sm:text-xs tracking-widest uppercase mb-1 shadow-md">
+                ★ RPG ROMANCE EDITION ★
+            </div>
+
+            <!-- Corazón Pixel Art SVG -->
+            <div class="my-2 animate-heart">
+                <svg class="w-24 h-24 sm:w-28 sm:h-28 mx-auto" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Borde negro -->
+                    <path d="M2 1H6V2H7V3H9V2H10V1H14V2H15V6H14V8H13V9H12V10H11V11H10V12H9V13H7V12H6V11H5V10H4V9H3V8H2V6H1V2H2V1Z" fill="#000000"/>
+                    <!-- Relleno Rosa Neón -->
+                    <path d="M3 2H6V3H7V4H9V3H10V2H13V3H14V6H13V8H12V9H11V10H10V11H9V12H7V11H6V10H5V9H4V8H3V6H2V3H3V2Z" fill="#ff2a85"/>
+                    <!-- Sombra inferior -->
+                    <path d="M3 6H2V3H3V6ZM13 6H14V3H13V6ZM12 8H13V6H12V8ZM11 9H12V8H11V9ZM10 10H11V9H10V10ZM9 11H10V10H9V11ZM7 12H9V11H7V12Z" fill="#b8004f"/>
+                    <!-- Brillo blanco -->
+                    <rect x="3" y="3" width="2" height="1" fill="#ffffff"/>
+                    <rect x="3" y="4" width="1" height="2" fill="#ffffff"/>
+                </svg>
+            </div>
+
+            <div class="space-y-2">
+                <p class="font-pixel-title text-xs sm:text-sm text-[#ffd700] tracking-widest">MISIÓN ESPECIAL:</p>
+                <h1 id="title-her-name" class="font-pixel-title text-3xl sm:text-5xl text-white glow-pink tracking-wider">
+                    MAYA
+                </h1>
+            </div>
+
+            <p class="font-pixel-body text-xl sm:text-2xl text-gray-300 max-w-md px-2 leading-snug">
+                Una aventura interactiva creada exclusivamente para ti. ¿Estás lista para desbloquear el siguiente nivel?
+            </p>
+
+            <div class="pt-4">
+                <button onclick="startGame()" class="pixel-btn pixel-btn-pink px-6 py-4 text-xs sm:text-sm tracking-wider blink-text">
+                    ▶ INICIAR PARTIDA
+                </button>
+            </div>
+
+            <p class="font-pixel-title text-[9px] text-gray-500 pt-6">
+                © 2026 CREADO CON MUCHO AMOR • VERSION MATEMOS PERUANOS
+            </p>
+        </section>
+
+
+        <!-- ==========================================
+             PANTALLA 2: DIÁLOGOS RPG (HISTORIA)
+             ========================================== -->
+        <section id="screen-dialogue" class="w-full hidden flex-col items-center space-y-5">
+            
+            <!-- Indicador de Nivel / Progreso -->
+            <div class="w-full flex justify-between items-center px-1">
+                <span id="dialogue-step-title" class="font-pixel-title text-[10px] sm:text-xs text-[#00f0ff] glow-cyan">
+                    NIVEL 1: EL COMIENZO
+                </span>
+                <span id="dialogue-step-counter" class="font-pixel-title text-[10px] sm:text-xs text-[#ffd700]">
+                    1 / 4
+                </span>
+            </div>
+
+            <!-- Barra de progreso tipo HP -->
+            <div class="w-full hp-bar-bg">
+                <div id="dialogue-progress" class="hp-bar-fill" style="width: 25%;"></div>
+            </div>
+
+            <!-- Escenario Visual del Diálogo -->
+            <div class="pixel-box-cyan w-full p-5 sm:p-7 flex flex-col items-center text-center relative overflow-hidden">
+                <!-- Decoración esquinas -->
+                <div class="absolute top-2 left-2 w-2 h-2 bg-[#00f0ff]"></div>
+                <div class="absolute top-2 right-2 w-2 h-2 bg-[#00f0ff]"></div>
+                <div class="absolute bottom-2 left-2 w-2 h-2 bg-[#00f0ff]"></div>
+                <div class="absolute bottom-2 right-2 w-2 h-2 bg-[#00f0ff]"></div>
+
+                <!-- Icono dinámico según el paso -->
+                <div id="dialogue-icon" class="text-5xl sm:text-6xl mb-4 transform transition-transform duration-300">
+                    ✨
+                </div>
+
+                <!-- Nombre del hablante -->
+                <div class="self-start bg-[#ff2a85] border-2 border-white px-3 py-0.5 font-pixel-title text-[10px] text-white mb-3 shadow">
+                    MENSAJE PARA MAYA:
+                </div>
+
+                <!-- Caja de Texto con Efecto Máquina de Escribir -->
+                <div onclick="handleBoxClick()" class="w-full bg-[#0d0b14] border-2 border-[#3a3546] p-4 sm:p-5 min-h-[130px] sm:min-h-[140px] flex items-center justify-start text-left cursor-pointer relative">
+                    <p id="typewriter-text" class="font-pixel-body text-2xl sm:text-3xl text-white leading-relaxed tracking-wide"></p>
+                    <span id="dialogue-cursor" class="inline-block w-2.5 h-5 bg-[#00f0ff] ml-1 animate-ping hidden"></span>
+                </div>
+
+                <!-- Botones de Navegación del Diálogo -->
+                <div class="w-full flex justify-between items-center mt-5">
+                    <span class="font-pixel-body text-base sm:text-lg text-gray-400">
+                        Toca el texto para saltar
+                    </span>
+                    <button id="next-dialogue-btn" onclick="nextDialogue()" class="pixel-btn pixel-btn-cyan px-5 py-3 text-[11px] sm:text-xs">
+                        SIGUIENTE ▶
+                    </button>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==========================================
+             PANTALLA 3: LA GRAN PREGUNTA (FINAL BOSS)
+             ========================================== -->
+        <section id="screen-question" class="w-full hidden flex-col items-center text-center space-y-4">
+            
+            <div class="bg-[#ffd700]/10 border-2 border-[#ffd700] px-4 py-1.5 text-[#ffd700] font-pixel-title text-[10px] sm:text-xs tracking-wider animate-bounce">
+                ★ ¡MISIÓN FINAL DESBLOQUEADA! ★
+            </div>
+
+            <div class="pixel-box w-full p-5 sm:p-8 flex flex-col items-center relative">
+                
+                <!-- Pequeños corazones pixelados -->
+                <div class="flex space-x-4 mb-3">
+                    <span class="text-2xl sm:text-3xl text-[#ff2a85] animate-pulse">❤</span>
+                    <span class="text-3xl sm:text-4xl text-[#ffd700] animate-bounce">👑</span>
+                    <span class="text-2xl sm:text-3xl text-[#ff2a85] animate-pulse">❤</span>
+                </div>
+
+                <!-- Pregunta Principal -->
+                <h2 id="main-question-title" class="font-pixel-title text-lg sm:text-2xl text-white glow-pink leading-relaxed my-2">
+                    Maya, ¿quieres ser mi enamorada?
+                </h2>
+
+                <p id="question-subtitle" class="font-pixel-body text-xl sm:text-2xl text-[#00f0ff] mb-4">
+                    Elige sabiamente para continuar la aventura...
+                </p>
+
+                <!-- Mensaje divertido que cambia cuando intenta presionar "No" -->
+                <div id="dodge-feedback" class="min-h-[32px] flex items-center justify-center px-2 mb-2">
+                    <span class="font-pixel-body text-lg sm:text-xl text-[#ffd700]"></span>
+                </div>
+
+                <!-- Zona de Botones (Con espacio para que el botón "No" pueda escapar) -->
+                <div id="buttons-arena" class="relative w-full min-h-[190px] sm:min-h-[210px] bg-[#0d0b14]/80 border-2 border-dashed border-[#3a3546] rounded p-4 flex flex-col sm:flex-row items-center justify-center gap-6 overflow-hidden">
+                    
+                    <!-- Botón SÍ -->
+                    <button id="btn-yes" onclick="acceptProposal()" class="pixel-btn pixel-btn-green px-6 py-4 text-xs sm:text-sm z-20 transition-transform duration-200">
+                        ¡SÍ, ACEPTO! ❤
+                    </button>
+
+                    <!-- Botón NO (Escurridizo) -->
+                    <button id="btn-no" class="pixel-btn pixel-btn-no px-5 py-3 text-xs sm:text-sm z-10 select-none">
+                        No...
+                    </button>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==========================================
+             PANTALLA 4: VICTORIA / CELEBRACIÓN
+             ========================================== -->
+        <section id="screen-victory" class="w-full hidden flex-col items-center text-center space-y-5 py-4">
+            
+            <div class="inline-block bg-[#00ff66]/20 border-2 border-[#00ff66] px-4 py-1.5 text-[#00ff66] font-pixel-title text-[10px] sm:text-xs tracking-widest shadow-lg">
+                🏆 ¡LOGRO DESBLOQUEADO: ENAMORADOS! 🏆
+            </div>
+
+            <div class="pixel-box-gold w-full p-6 sm:p-8 flex flex-col items-center space-y-5 relative">
+                
+                <!-- Doble Corazón Pixel Art -->
+                <div class="flex items-center justify-center space-x-3 animate-heart">
+                    <svg class="w-16 h-16 sm:w-20 sm:h-20" viewBox="0 0 16 16" fill="none">
+                        <path d="M2 1H6V2H7V3H9V2H10V1H14V2H15V6H14V8H13V9H12V10H11V11H10V12H9V13H7V12H6V11H5V10H4V9H3V8H2V6H1V2H2V1Z" fill="#000"/>
+                        <path d="M3 2H6V3H7V4H9V3H10V2H13V3H14V6H13V8H12V9H11V10H10V11H9V12H7V11H6V10H5V9H4V8H3V6H2V3H3V2Z" fill="#ff2a85"/>
+                        <rect x="3" y="3" width="2" height="1" fill="#fff"/>
+                    </svg>
+                    <span class="font-pixel-title text-xl sm:text-2xl text-[#ffd700]">+</span>
+                    <svg class="w-16 h-16 sm:w-20 sm:h-20" viewBox="0 0 16 16" fill="none">
+                        <path d="M2 1H6V2H7V3H9V2H10V1H14V2H15V6H14V8H13V9H12V10H11V11H10V12H9V13H7V12H6V11H5V10H4V9H3V8H2V6H1V2H2V1Z" fill="#000"/>
+                        <path d="M3 2H6V3H7V4H9V3H10V2H13V3H14V6H13V8H12V9H11V10H10V11H9V12H7V11H6V10H5V9H4V8H3V6H2V3H3V2Z" fill="#00f0ff"/>
+                        <rect x="3" y="3" width="2" height="1" fill="#fff"/>
+                    </svg>
+                </div>
+
+                <h2 id="victory-title" class="font-pixel-title text-xl sm:text-3xl text-[#ffd700] glow-gold leading-snug">
+                    ¡SABÍA QUE DIRÍAS QUE SÍ, MAYA!
+                </h2>
+
+                <p id="victory-message" class="font-pixel-body text-2xl sm:text-3xl text-white leading-relaxed max-w-lg">
+                    Acabas de hacerme la persona más feliz del mundo. Prometo cuidarte, hacerte reír y vivir las mejores aventuras a tu lado. ❤️
+                </p>
+
+                <!-- Cuadro de Estadísticas de Pareja (RPG Stats) -->
+                <div class="w-full bg-[#0d0b14] border-2 border-[#ffd700] p-4 text-left font-pixel-body text-xl sm:text-2xl space-y-2 shadow-inner">
+                    <div class="text-xs font-pixel-title text-[#ffd700] border-b border-[#3a3546] pb-2 mb-2">
+                        📊 ESTADÍSTICAS DE LA PARTIDA:
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">JUGADORES:</span>
+                        <span id="stat-players" class="text-[#00f0ff] font-bold">Maya & Tú</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">NIVEL DE AMOR:</span>
+                        <span class="text-[#ff2a85] font-bold">∞ INFINITO</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">FELICIDAD:</span>
+                        <span class="text-[#00ff66] font-bold">+999,999 PTS</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">FECHA DE INICIO:</span>
+                        <span id="stat-date" class="text-[#ffd700] font-bold">HOY</span>
+                    </div>
+                </div>
+
+                <div class="pt-2 flex flex-wrap justify-center gap-4">
+                    <button onclick="launchMoreFireworks()" class="pixel-btn pixel-btn-pink px-4 py-3 text-[10px] sm:text-xs">
+                        🎉 MÁS CORAZONES
+                    </button>
+                    <button onclick="resetGame()" class="pixel-btn pixel-btn-cyan px-4 py-3 text-[10px] sm:text-xs">
+                        🔄 REPETIR HISTORIA
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        /* =========================================================================
+           ★★★ ZONA DE EDICIÓN FÁCIL (PERSONALIZA TUS FRASES AQUÍ) ★★★
+           Aquí puedes cambiar los textos, apodos o mensajes para Maya cuando quieras.
+           ========================================================================= */
+        const CONFIG = {
+            // Nombre de ella
+            nombreElla: "Maya",
+            
+            // Cómo quieres que aparezca en las estadísticas finales (Ej: "Maya & Sebas")
+            jugadoresTexto: "Maya & Piwicho",
+
+            // Historia dividida en pasos antes de la gran pregunta
+            dialogos: [
+                {
+                    tituloNivel: "NIVEL 1: EL ENCUENTRO",
+                    icono: "🌟",
+                    texto: "Hola Maya... Desde la primera vez que te conocì, me demostraste ser una persona divertida, hermosa y en quien confiar."
+                },
+                {
+                    tituloNivel: "NIVEL 2: MODO CO-OP",
+                    icono: "🎮",
+                    texto: "Cada risa, cada charla y cada momento que pasamos juntos me suma +1000 puntos de felicidad. Eres mi persona favorita."
+                },
+                {
+                    tituloNivel: "NIVEL 3: MI LUGAR SEGURO",
+                    icono: "💖",
+                    texto: "No importa qué tan difícil se ponga el juego de la vida, si estoy en el mismo equipo que tú, sé que siempre vamos a ganar."
+                },
+                {
+                    tituloNivel: "NIVEL 4: EL PASO FINAL",
+                    icono: "🗝️",
+                    texto: "Por eso hoy quiero guardar este recuerdo contigo y hacerte una pregunta muy especial que llevo tiempo queriendo hacerte..."
+                }
+            ],
+
+            // La gran pregunta
+            preguntaPrincipal: "Maya, ¿quieres ser mi enamorada?",
+            subtituloPregunta: "Elige una opción para continuar nuestra historia...",
+
+            // Textos flotantes tipo videojuego cuando el botón "No" esquiva el dedo/mouse
+            textosEsquivar: [
+                "¡MISS!",
+                "¡ESQUIVADO!",
+                "¡ERROR 404!",
+                "¡OPCIÓN BLOQUEADA!",
+                "¡INTENTA EL SÍ!",
+                "¡ACCESO DENEGADO!",
+                "¡NOP! 😜"
+            ],
+
+            // Mensajes que aparecen arriba de los botones cada vez que intenta darle al "No"
+            mensajesEsquivar: [
+                "¡Ups! Parece que ese botón tiene un bug... 👾",
+                "¡El botón 'No' tiene 999 de agilidad, es imposible atraparlo! ⚡",
+                "El destino dice que la respuesta correcta es el botón verde 😉",
+                "¡Mira cómo crece el botón del SÍ! Te está llamando... ❤️",
+                "¡Ríndete Maya, el universo quiere que digas que SÍ! ✨"
+            ],
+
+            // Textos de la pantalla final cuando dice que SÍ
+            tituloVictoria: "¡VAMOOOOOOOOOOOOOOOS!",
+            mensajeVictoria: "En esta nueva etapa de nuestra vidas. Prometo cuidarte, quererte muchísimo y vivir las mejores aventuras a tu lado. ¡T AMO! ❤️"
+        };
+        /* =========================================================================
+           ★★★ FIN DE LA ZONA DE EDICIÓN FÁCIL ★★★
+           ========================================================================= */
+
+
+        // Variables de Estado del Juego
+        let currentDialogueIndex = 0;
+        let isTyping = false;
+        let typingTimer = null;
+        let dodgeCount = 0;
+        let yesButtonScale = 1;
+        let soundEnabled = true;
+        let audioCtx = null;
+
+        // Inicialización de Textos Personalizados al cargar
+        window.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('title-her-name').textContent = CONFIG.nombreElla.toUpperCase();
+            document.getElementById('main-question-title').textContent = CONFIG.preguntaPrincipal;
+            document.getElementById('question-subtitle').textContent = CONFIG.subtituloPregunta;
+            document.getElementById('victory-title').textContent = CONFIG.tituloVictoria;
+            document.getElementById('victory-message').textContent = CONFIG.mensajeVictoria;
+            document.getElementById('stat-players').textContent = CONFIG.jugadoresTexto;
+
+            // Poner la fecha actual en las estadísticas finales
+            const hoy = new Date();
+            const opcionesFecha = { day: '2-digit', month: 'short', year: 'numeric' };
+            document.getElementById('stat-date').textContent = hoy.toLocaleDateString('es-ES', opcionesFecha).toUpperCase();
+
+            initBackgroundStars();
+            setupNoButtonDodge();
+        });
+
+        /* =========================================================================
+           MOTOR DE SONIDO 8-BITS (Web Audio API - Sin archivos externos)
+           ========================================================================= */
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function toggleAudio() {
+            soundEnabled = !soundEnabled;
+            const icon = document.getElementById('soundIcon');
+            const label = document.getElementById('soundLabel');
+            if (soundEnabled) {
+                initAudio();
+                icon.textContent = '🔊';
+                label.textContent = 'SFX: ON';
+                playTone(660, 0.08, 'square', 0.08);
+            } else {
+                icon.textContent = '🔇';
+                label.textContent = 'SFX: OFF';
+            }
+        }
+
+        function playTone(freq, duration, type = 'square', volume = 0.08, delay = 0) {
+            if (!soundEnabled) return;
+            try {
+                initAudio();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime + delay);
+
+                gain.gain.setValueAtTime(volume, audioCtx.currentTime + delay);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + delay + duration);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.start(audioCtx.currentTime + delay);
+                osc.stop(audioCtx.currentTime + delay + duration);
+            } catch (e) {
+                // Ignorar si el navegador bloquea el audio antes de interactuar
+            }
+        }
+
+        function sfxClick() {
+            playTone(520, 0.06, 'square', 0.08, 0);
+            playTone(780, 0.08, 'square', 0.08, 0.05);
+        }
+
+        function sfxType() {
+            const randomFreq = 380 + Math.random() * 140;
+            playTone(randomFreq, 0.03, 'square', 0.03, 0);
+        }
+
+        function sfxDodge() {
+            playTone(300, 0.06, 'sawtooth', 0.08, 0);
+            playTone(180, 0.1, 'sawtooth', 0.08, 0.05);
+        }
+
+        function sfxUnlockQuestion() {
+            const notes = [440, 554.37, 659.25, 880];
+            notes.forEach((n, idx) => {
+                playTone(n, 0.12, 'square', 0.09, idx * 0.09);
+            });
+        }
+
+        function sfxVictoryFanfare() {
+            // Fanfarria de victoria estilo RPG clásico
+            const melody = [
+                { f: 523.25, d: 0.12, t: 0.00 }, // C5
+                { f: 523.25, d: 0.12, t: 0.13 }, // C5
+                { f: 523.25, d: 0.12, t: 0.26 }, // C5
+                { f: 523.25, d: 0.30, t: 0.39 }, // C5
+                { f: 415.30, d: 0.30, t: 0.70 }, // G#4
+                { f: 466.16, d: 0.30, t: 1.00 }, // A#4
+                { f: 523.25, d: 0.18, t: 1.30 }, // C5
+                { f: 466.16, d: 0.12, t: 1.50 }, // A#4
+                { f: 523.25, d: 0.65, t: 1.65 }  // C5
+            ];
+            melody.forEach(note => {
+                playTone(note.f, note.d, 'square', 0.1, note.t);
+            });
+        }
+
+        /* =========================================================================
+           FLUJO DE PANTALLAS Y DIÁLOGOS RPG
+           ========================================================================= */
+        function showScreen(screenId) {
+            const screens = ['screen-start', 'screen-dialogue', 'screen-question', 'screen-victory'];
+            screens.forEach(id => {
+                const el = document.getElementById(id);
+                if (id === screenId) {
+                    el.classList.remove('hidden');
+                    el.classList.add('flex');
+                } else {
+                    el.classList.add('hidden');
+                    el.classList.remove('flex');
+                }
+            });
+        }
+
+        function startGame() {
+            sfxClick();
+            currentDialogueIndex = 0;
+            showScreen('screen-dialogue');
+            renderDialogueStep();
+        }
+
+        function renderDialogueStep() {
+            const stepData = CONFIG.dialogos[currentDialogueIndex];
+            const totalSteps = CONFIG.dialogos.length;
+
+            // Actualizar encabezados y barra de progreso
+            document.getElementById('dialogue-step-title').textContent = stepData.tituloNivel;
+            document.getElementById('dialogue-step-counter').textContent = `${currentDialogueIndex + 1} / ${totalSteps}`;
+            
+            const progressPercent = ((currentDialogueIndex + 1) / totalSteps) * 100;
+            document.getElementById('dialogue-progress').style.width = `${progressPercent}%`;
+
+            // Animación del icono
+            const iconEl = document.getElementById('dialogue-icon');
+            iconEl.textContent = stepData.icono;
+            iconEl.classList.add('scale-125');
+            setTimeout(() => iconEl.classList.remove('scale-125'), 250);
+
+            // Cambiar texto del botón si es el último diálogo
+            const nextBtn = document.getElementById('next-dialogue-btn');
+            if (currentDialogueIndex === totalSteps - 1) {
+                nextBtn.textContent = 'VER PREGUNTA ★';
+            } else {
+                nextBtn.textContent = 'SIGUIENTE ▶';
+            }
+
+            // Iniciar máquina de escribir
+            typeText(stepData.texto);
+        }
+
+        function typeText(fullText) {
+            clearInterval(typingTimer);
+            const textEl = document.getElementById('typewriter-text');
+            const cursorEl = document.getElementById('dialogue-cursor');
+            textEl.textContent = '';
+            cursorEl.classList.add('hidden');
+            isTyping = true;
+
+            let charIndex = 0;
+            typingTimer = setInterval(() => {
+                if (charIndex < fullText.length) {
+                    textEl.textContent += fullText.charAt(charIndex);
+                    if (charIndex % 2 === 0 && fullText.charAt(charIndex) !== ' ') {
+                        sfxType();
+                    }
+                    charIndex++;
+                } else {
+                    finishTyping(fullText);
+                }
+            }, 35);
+        }
+
+        function finishTyping(fullText) {
+            clearInterval(typingTimer);
+            document.getElementById('typewriter-text').textContent = fullText;
+            document.getElementById('dialogue-cursor').classList.remove('hidden');
+            isTyping = false;
+        }
+
+        function handleBoxClick() {
+            const currentText = CONFIG.dialogos[currentDialogueIndex].texto;
+            if (isTyping) {
+                finishTyping(currentText);
+            } else {
+                nextDialogue();
+            }
+        }
+
+        function nextDialogue() {
+            const currentText = CONFIG.dialogos[currentDialogueIndex].texto;
+            if (isTyping) {
+                finishTyping(currentText);
+                return;
+            }
+
+            sfxClick();
+            currentDialogueIndex++;
+
+            if (currentDialogueIndex < CONFIG.dialogos.length) {
+                renderDialogueStep();
+            } else {
+                // Pasar a la Gran Pregunta
+                sfxUnlockQuestion();
+                showScreen('screen-question');
+            }
+        }
+
+        /* =========================================================================
+           LÓGICA DEL BOTÓN "NO" ESCURRIDIZO
+           ========================================================================= */
+        function setupNoButtonDodge() {
+            const btnNo = document.getElementById('btn-no');
+
+            // Eventos para computadora (hover) y celular (touch)
+            btnNo.addEventListener('mouseenter', (e) => dodgeNoButton(e));
+            btnNo.addEventListener('touchstart', (e) => {
+                e.preventDefault(); // Evita que se haga click en móvil
+                dodgeNoButton(e);
+            }, { passive: false });
+            btnNo.addEventListener('click', (e) => {
+                e.preventDefault();
+                dodgeNoButton(e);
+            });
+        }
+
+        function dodgeNoButton(event) {
+            sfxDodge();
+            dodgeCount++;
+
+            const arena = document.getElementById('buttons-arena');
+            const btnNo = document.getElementById('btn-no');
+            const btnYes = document.getElementById('btn-yes');
+
+            // Coordenadas para mostrar el texto flotante de "¡MISS!"
+            const btnRect = btnNo.getBoundingClientRect();
+            const centerX = btnRect.left + btnRect.width / 2;
+            const centerY = btnRect.top;
+            spawnCombatText(centerX, centerY);
+
+            // Hacer que el botón "No" pase a posición absoluta dentro de la caja
+            btnNo.style.position = 'absolute';
+
+            const arenaWidth = arena.clientWidth;
+            const arenaHeight = arena.clientHeight;
+            const btnWidth = btnNo.offsetWidth;
+            const btnHeight = btnNo.offsetHeight;
+
+            const padding = 12;
+            const maxX = Math.max(padding, arenaWidth - btnWidth - padding);
+            const maxY = Math.max(padding, arenaHeight - btnHeight - padding);
+
+            const randomX = Math.floor(padding + Math.random() * (maxX - padding));
+            const randomY = Math.floor(padding + Math.random() * (maxY - padding));
+
+            btnNo.style.left = `${randomX}px`;
+            btnNo.style.top = `${randomY}px`;
+
+            // Hacer crecer el botón del "SÍ" gradualmente
+            yesButtonScale = Math.min(1.65, yesButtonScale + 0.1);
+            btnYes.style.transform = `scale(${yesButtonScale})`;
+
+            // Actualizar mensaje divertido arriba de los botones
+            const feedbackContainer = document.querySelector('#dodge-feedback span');
+            const msgIndex = (dodgeCount - 1) % CONFIG.mensajesEsquivar.length;
+            feedbackContainer.textContent = CONFIG.mensajesEsquivar[msgIndex];
+        }
+
+        function spawnCombatText(x, y) {
+            const textEl = document.createElement('div');
+            textEl.className = 'combat-text';
+            const randomPhrase = CONFIG.textosEsquivar[Math.floor(Math.random() * CONFIG.textosEsquivar.length)];
+            textEl.textContent = randomPhrase;
+
+            // Alternar colores neón para el texto de combate
+            const colors = ['#ff2a85', '#00f0ff', '#ffd700', '#00ff66'];
+            textEl.style.color = colors[Math.floor(Math.random() * colors.length)];
+
+            // Asegurar que no se salga de los bordes de la pantalla
+            const safeX = Math.min(Math.max(20, x - 40), window.innerWidth - 120);
+            const safeY = Math.max(40, y - 10);
+
+            textEl.style.left = `${safeX}px`;
+            textEl.style.top = `${safeY}px`;
+
+            document.body.appendChild(textEl);
+            setTimeout(() => textEl.remove(), 900);
+        }
+
+        /* =========================================================================
+           ACEPTACIÓN Y PANTALLA DE VICTORIA
+           ========================================================================= */
+        function acceptProposal() {
+            sfxVictoryFanfare();
+            showScreen('screen-victory');
+            launchMoreFireworks();
+        }
+
+        function resetGame() {
+            sfxClick();
+            dodgeCount = 0;
+            yesButtonScale = 1;
+            
+            const btnYes = document.getElementById('btn-yes');
+            const btnNo = document.getElementById('btn-no');
+            btnYes.style.transform = 'scale(1)';
+            btnNo.style.position = 'relative';
+            btnNo.style.left = 'auto';
+            btnNo.style.top = 'auto';
+            document.querySelector('#dodge-feedback span').textContent = '';
+
+            showScreen('screen-start');
+        }
+
+        /* =========================================================================
+           FONDO ANIMADO (ESTRELLAS Y CORAZONES PIXELADOS)
+           ========================================================================= */
+        const bgCanvas = document.getElementById('bgCanvas');
+        const bgCtx = bgCanvas.getContext('2d');
+        let stars = [];
+
+        function resizeCanvases() {
+            bgCanvas.width = window.innerWidth;
+            bgCanvas.height = window.innerHeight;
+            fxCanvas.width = window.innerWidth;
+            fxCanvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvases);
+
+        function initBackgroundStars() {
+            resizeCanvases();
+            stars = [];
+            const starCount = 75;
+            const palette = ['#ffffff', '#ff2a85', '#00f0ff', '#ffd700', '#8c859b'];
+
+            for (let i = 0; i < starCount; i++) {
+                stars.push({
+                    x: Math.random() * bgCanvas.width,
+                    y: Math.random() * bgCanvas.height,
+                    size: Math.random() > 0.8 ? 4 : 2,
+                    speedY: 0.2 + Math.random() * 0.6,
+                    color: palette[Math.floor(Math.random() * palette.length)],
+                    blinkOffset: Math.random() * Math.PI * 2
+                });
+            }
+            requestAnimationFrame(animateBackground);
+        }
+
+        function animateBackground(timestamp) {
+            bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+
+            stars.forEach(star => {
+                star.y -= star.speedY;
+                if (star.y < 0) {
+                    star.y = bgCanvas.height;
+                    star.x = Math.random() * bgCanvas.width;
+                }
+
+                const alpha = 0.35 + 0.65 * Math.abs(Math.sin(timestamp * 0.002 + star.blinkOffset));
+                bgCtx.fillStyle = star.color;
+                bgCtx.globalAlpha = alpha;
+                bgCtx.fillRect(Math.floor(star.x), Math.floor(star.y), star.size, star.size);
+            });
+
+            bgCtx.globalAlpha = 1;
+            requestAnimationFrame(animateBackground);
+        }
+
+        /* =========================================================================
+           PARTÍCULAS DE CELEBRACIÓN (CONFETI Y CORAZONES PIXEL)
+           ========================================================================= */
+        const fxCanvas = document.getElementById('fxCanvas');
+        const fxCtx = fxCanvas.getContext('2d');
+        let particles = [];
+        let fxAnimating = false;
+
+        function launchMoreFireworks() {
+            if (soundEnabled && document.getElementById('screen-victory').classList.contains('flex')) {
+                playTone(587.33, 0.08, 'square', 0.06, 0);
+                playTone(880, 0.15, 'square', 0.06, 0.07);
+            }
+
+            const colors = ['#ff2a85', '#00f0ff', '#ffd700', '#00ff66', '#ffffff', '#ff7eb3'];
+            const centerX = fxCanvas.width / 2;
+            const centerY = fxCanvas.height / 2;
+
+            for (let i = 0; i < 90; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = 2 + Math.random() * 9;
+                particles.push({
+                    x: centerX + (Math.random() - 0.5) * 120,
+                    y: centerY + (Math.random() - 0.5) * 80,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed - 3,
+                    size: Math.random() > 0.4 ? 6 : 4,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    isHeart: Math.random() > 0.65,
+                    life: 1,
+                    decay: 0.008 + Math.random() * 0.012
+                });
+            }
+
+            if (!fxAnimating) {
+                fxAnimating = true;
+                requestAnimationFrame(animateParticles);
+            }
+        }
+
+        function drawMiniPixelHeart(ctx, x, y, color) {
+            ctx.fillStyle = color;
+            // Matriz 5x4 de un mini corazón pixelado
+            const heartMap = [
+                [0, 1, 0, 1, 0],
+                [1, 1, 1, 1, 1],
+                [0, 1, 1, 1, 0],
+                [0, 0, 1, 0, 0]
+            ];
+            const px = 3;
+            for (let r = 0; r < heartMap.length; r++) {
+                for (let c = 0; c < heartMap[r].length; c++) {
+                    if (heartMap[r][c]) {
+                        ctx.fillRect(Math.floor(x + c * px), Math.floor(y + r * px), px, px);
+                    }
+                }
+            }
+        }
+
+        function animateParticles() {
+            fxCtx.clearRect(0, 0, fxCanvas.width, fxCanvas.height);
+
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.18; // Gravedad retro
+                p.life -= p.decay;
+
+                if (p.life <= 0) {
+                    particles.splice(i, 1);
+                    continue;
+                }
+
+                fxCtx.globalAlpha = Math.max(0, p.life);
+                if (p.isHeart) {
+                    drawMiniPixelHeart(fxCtx, p.x, p.y, p.color);
+                } else {
+                    fxCtx.fillStyle = p.color;
+                    fxCtx.fillRect(Math.floor(p.x), Math.floor(p.y), p.size, p.size);
+                }
+            }
+
+            fxCtx.globalAlpha = 1;
+
+            if (particles.length > 0) {
+                requestAnimationFrame(animateParticles);
+            } else {
+                fxAnimating = false;
+            }
+        }
+    </script>
+</body>
+</html>
