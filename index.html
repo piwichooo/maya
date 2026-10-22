@@ -298,7 +298,7 @@
             </div>
 
             <p class="font-pixel-title text-[9px] text-gray-500 pt-6">
-                © 2026 CREADO CON MUCHO AMOR • VERSION MATEMOS PERUANOS
+                © 2025 CREADO CON MUCHO AMOR • VER 1.0
             </p>
         </section>
 
@@ -467,7 +467,14 @@
                     </div>
                 </div>
 
-                <div class="pt-2 flex flex-wrap justify-center gap-4">
+                <!-- Botón Principal Destacado: Minijuego 2D con Tukis -->
+                <div class="w-full pt-2">
+                    <button onclick="openForestGame()" class="pixel-btn pixel-btn-green w-full py-4 px-4 text-xs sm:text-sm tracking-wider blink-text">
+                        🌲 PASEAR CON TUKIS (MODO 2D) 🐾
+                    </button>
+                </div>
+
+                <div class="pt-1 flex flex-wrap justify-center gap-4">
                     <button onclick="launchMoreFireworks()" class="pixel-btn pixel-btn-pink px-4 py-3 text-[10px] sm:text-xs">
                         🎉 MÁS CORAZONES
                     </button>
@@ -477,6 +484,89 @@
                 </div>
 
             </div>
+        </section>
+
+
+        <!-- ==========================================
+             PANTALLA 5: MINIJUEGO 2D ESTILO POKÉMON (MAYA & TUKIS)
+             ========================================== -->
+        <section id="screen-minigame" class="w-full hidden flex-col items-center justify-center space-y-2 py-1">
+            
+            <!-- Barra superior del Minijuego -->
+            <div class="w-full flex justify-between items-center bg-[#181425] border-2 border-[#00ff66] px-3 py-1.5 shadow-md">
+                <div class="flex items-center gap-2">
+                    <span class="text-sm">🌲</span>
+                    <span class="font-pixel-title text-[9px] sm:text-[11px] text-[#00ff66]">BOSQUE DE TUKIS</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span id="forest-hearts-hud" class="font-pixel-title text-[9px] sm:text-[11px] text-[#ffd700]">
+                        ❤ 0/5
+                    </span>
+                    <button onclick="exitForestGame()" class="bg-[#ff2a85] border border-white px-2 py-1 font-pixel-title text-[8px] sm:text-[9px] text-white hover:bg-[#ff4796] cursor-pointer">
+                        ⬅ VOLVER
+                    </button>
+                </div>
+            </div>
+
+            <!-- Contenedor del Canvas 2D Estilo Pokémon -->
+            <div class="pixel-box-cyan p-1.5 sm:p-2 w-full flex flex-col items-center relative bg-[#09070d]">
+                <canvas id="pokeCanvas" width="384" height="288" class="w-full max-w-[460px] h-auto border-2 border-[#2a2438] bg-[#163020] image-rendering-pixelated" style="image-rendering: pixelated;"></canvas>
+
+                <!-- Caja de diálogo estilo Pokémon dentro del mapa -->
+                <div id="poke-dialog-box" onclick="closePokeDialog()" class="w-full max-w-[460px] mt-1.5 bg-[#181425] border-2 border-white p-2.5 sm:p-3 min-h-[68px] flex items-center justify-between cursor-pointer shadow-inner">
+                    <div class="flex items-start gap-2.5 text-left pr-2">
+                        <span id="poke-dialog-icon" class="text-2xl sm:text-3xl leading-none select-none">🐶</span>
+                        <div>
+                            <div id="poke-dialog-speaker" class="font-pixel-title text-[9px] text-[#ffd700] mb-0.5">TUKIS</div>
+                            <p id="poke-dialog-text" class="font-pixel-body text-lg sm:text-xl text-white leading-tight">
+                                ¡Guau! Usa las flechas para pasear por el bosque y recoge los 5 corazones.
+                            </p>
+                        </div>
+                    </div>
+                    <span class="font-pixel-title text-[9px] text-[#00f0ff] animate-bounce self-end">▼</span>
+                </div>
+            </div>
+
+            <!-- Controles Táctiles Estilo GameBoy (Para Celular y PC) -->
+            <div class="w-full max-w-[460px] flex justify-between items-center px-2 pt-1 select-none">
+                
+                <!-- Cruceta (D-Pad) -->
+                <div class="grid grid-cols-3 gap-1 w-28 h-28 sm:w-32 sm:h-32">
+                    <div></div>
+                    <button id="dpad-up" class="bg-[#282238] active:bg-[#00f0ff] active:text-black border-2 border-[#8c859b] rounded flex items-center justify-center text-white font-pixel-title text-xs shadow-md">▲</button>
+                    <div></div>
+                    <button id="dpad-left" class="bg-[#282238] active:bg-[#00f0ff] active:text-black border-2 border-[#8c859b] rounded flex items-center justify-center text-white font-pixel-title text-xs shadow-md">◀</button>
+                    <div class="bg-[#181425] border border-[#3a3546] rounded flex items-center justify-center text-[10px] text-[#ff2a85]">🐾</div>
+                    <button id="dpad-right" class="bg-[#282238] active:bg-[#00f0ff] active:text-black border-2 border-[#8c859b] rounded flex items-center justify-center text-white font-pixel-title text-xs shadow-md">▶</button>
+                    <div></div>
+                    <button id="dpad-down" class="bg-[#282238] active:bg-[#00f0ff] active:text-black border-2 border-[#8c859b] rounded flex items-center justify-center text-white font-pixel-title text-xs shadow-md">▼</button>
+                    <div></div>
+                </div>
+
+                <!-- Indicaciones en PC -->
+                <div class="hidden sm:flex flex-col items-center text-center font-pixel-body text-sm text-gray-400 px-2">
+                    <span>PC: WASD / Flechas</span>
+                    <span>ESPACIO: Interactuar</span>
+                </div>
+
+                <!-- Botones de Acción A y B -->
+                <div class="flex items-center gap-3">
+                    <div class="flex flex-col items-center">
+                        <button onclick="callTukisBark()" class="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#ff2a85] active:translate-y-1 border-2 border-white shadow-lg flex items-center justify-center font-pixel-title text-xs text-white">
+                            🐶
+                        </button>
+                        <span class="font-pixel-title text-[8px] text-gray-300 mt-1">MIMAR TUKIS</span>
+                    </div>
+                    <div class="flex flex-col items-center -mt-4">
+                        <button onclick="interactInForest()" class="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#00b347] active:translate-y-1 border-2 border-[#00ff66] shadow-lg flex items-center justify-center font-pixel-title text-xs text-white">
+                            A
+                        </button>
+                        <span class="font-pixel-title text-[8px] text-gray-300 mt-1">HABLAR / VER</span>
+                    </div>
+                </div>
+
+            </div>
+
         </section>
 
     </main>
@@ -543,7 +633,23 @@
 
             // Textos de la pantalla final cuando dice que SÍ
             tituloVictoria: "¡VAMOOOOOOOOOOOOOOOS!",
-            mensajeVictoria: "En esta nueva etapa de nuestra vidas. Prometo cuidarte, quererte muchísimo y vivir las mejores aventuras a tu lado. ¡T AMO! ❤️"
+            mensajeVictoria: "En esta nueva etapa de nuestra vidas. Prometo cuidarte, quererte muchísimo y vivir las mejores aventuras a tu lado. ¡T AMO! ❤️",
+
+            // Textos y diálogos del Minijuego 2D (El Bosque de Tukis)
+            frasesBosque: {
+                bienvenida: "¡Bienvenido a peru! Tukis te sigue a todos lados. Recoge los 5 corazones brillantes o acércate a Piwicho.",
+                acariciarTukis: [
+                    "¡Guau guau! ¡Tukis mueve la colita súper feliz y te da un lengüetazo! 🐶❤️",
+                    "¡Tukis da un saltito de alegría! 🐾✨",
+                    "Tukis olfatea las flores del bosque y se pega a tu lado para cuidarte. 🐶🌸",
+                    "¡Tukis dice que aprueba al 1000% esta relación! 🏆🐶"
+                ],
+                hablarMichi: "¡Miau! se tira un pedo. 🐱💤",
+                hablarPiwicho: "Piwicho: Saquenme de peru",
+                cartelBosque: "📜 CARTEL DEL BOSQUE: 'Bienvenido a peru, guarden los celulares y carteras'",
+                cofreCerrado: "🎁 Es un cofre especial. ¡Recoge primero los 5 corazones del bosque para abrirlo!",
+                cofreAbierto: "👑 ¡ABRIISTE EL COFRE SECRETO! Dentro hay un collar dorado para Tukis y una promesa eterna: 'Por infinitos paseos, risas y momentos juntos. Te amo Maya ❤️ - Piwicho'."
+            }
         };
         /* =========================================================================
            ★★★ FIN DE LA ZONA DE EDICIÓN FÁCIL ★★★
@@ -667,13 +773,33 @@
             });
         }
 
+        function sfxBark() {
+            // Ladrido tierno en 8-bits para Tukis
+            playTone(220, 0.06, 'sawtooth', 0.09, 0);
+            playTone(340, 0.08, 'square', 0.1, 0.04);
+            playTone(190, 0.09, 'sawtooth', 0.08, 0.14);
+            playTone(390, 0.10, 'square', 0.1, 0.18);
+        }
+
+        function sfxMeow() {
+            playTone(580, 0.12, 'triangle', 0.09, 0);
+            playTone(760, 0.18, 'triangle', 0.09, 0.10);
+            playTone(640, 0.15, 'triangle', 0.07, 0.25);
+        }
+
+        function sfxPickupHeart() {
+            playTone(587.33, 0.08, 'square', 0.08, 0);
+            playTone(880, 0.16, 'square', 0.09, 0.08);
+        }
+
         /* =========================================================================
            FLUJO DE PANTALLAS Y DIÁLOGOS RPG
            ========================================================================= */
         function showScreen(screenId) {
-            const screens = ['screen-start', 'screen-dialogue', 'screen-question', 'screen-victory'];
+            const screens = ['screen-start', 'screen-dialogue', 'screen-question', 'screen-victory', 'screen-minigame'];
             screens.forEach(id => {
                 const el = document.getElementById(id);
+                if (!el) return;
                 if (id === screenId) {
                     el.classList.remove('hidden');
                     el.classList.add('flex');
@@ -1028,6 +1154,736 @@
             } else {
                 fxAnimating = false;
             }
+        }
+
+        /* =========================================================================
+           MINIJUEGO 2D ESTILO POKÉMON: MAYA & TUKIS EN EL BOSQUE SECRETO
+           ========================================================================= */
+        const pokeCanvas = document.getElementById('pokeCanvas');
+        const pCtx = pokeCanvas.getContext('2d');
+
+        let forestRunning = false;
+        let forestAnimId = null;
+        let forestTick = 0;
+
+        // Estado de Maya (Jugadora)
+        const mayaPlayer = {
+            x: 176,
+            y: 210,
+            speed: 2.1,
+            dir: 'down', // 'down', 'up', 'left', 'right'
+            moving: false,
+            walkFrame: 0,
+            emotionTimer: 0
+        };
+
+        // Estado de Tukis (Su Bóxer compañero que la sigue como en Pokémon)
+        const tukisDog = {
+            x: 144,
+            y: 210,
+            dir: 'right',
+            moving: false,
+            walkFrame: 0,
+            heartTimer: 0,
+            barkText: ''
+        };
+
+        // Historial de pasos de Maya para que Tukis la siga suavemente
+        let stepHistory = [];
+
+        // Teclas presionadas (PC y D-Pad móvil)
+        const keysPressed = {
+            up: false,
+            down: false,
+            left: false,
+            right: false
+        };
+
+        // NPCs y Elementos del Bosque
+        const piwichoNPC = { x: 192, y: 66 };
+        const michiNPC = { x: 288, y: 185, heartTimer: 0 };
+        const signPost = { x: 105, y: 145 };
+        const secretChest = { x: 192, y: 38, opened: false };
+
+        // Corazones coleccionables en el bosque
+        let forestHearts = [];
+        let collectedHeartsCount = 0;
+
+        // Árboles del borde y obstáculos del bosque
+        const forestTrees = [
+            // Borde superior
+            { x: 10, y: 8 }, { x: 46, y: 8 }, { x: 82, y: 8 }, { x: 118, y: 8 },
+            { x: 254, y: 8 }, { x: 290, y: 8 }, { x: 326, y: 8 }, { x: 356, y: 8 },
+            // Borde izquierdo
+            { x: 6, y: 48 }, { x: 6, y: 92 }, { x: 6, y: 136 }, { x: 6, y: 180 }, { x: 6, y: 224 },
+            // Borde derecho
+            { x: 352, y: 48 }, { x: 352, y: 92 }, { x: 352, y: 136 }, { x: 352, y: 180 }, { x: 352, y: 224 },
+            // Árboles internos decorativos
+            { x: 64, y: 75 }, { x: 300, y: 82 },
+            { x: 58, y: 195 }, { x: 312, y: 218 }
+        ];
+
+        // Luciérnagas mágicas del bosque
+        const fireflies = Array.from({ length: 18 }, () => ({
+            x: 25 + Math.random() * 330,
+            y: 25 + Math.random() * 235,
+            phase: Math.random() * Math.PI * 2,
+            speedX: (Math.random() - 0.5) * 0.35,
+            speedY: (Math.random() - 0.5) * 0.35
+        }));
+
+        function initForestCollectibles() {
+            collectedHeartsCount = 0;
+            secretChest.opened = false;
+            forestHearts = [
+                { x: 62, y: 135, collected: false },
+                { x: 315, y: 60, collected: false },
+                { x: 118, y: 65, collected: false },
+                { x: 265, y: 235, collected: false },
+                { x: 95, y: 238, collected: false }
+            ];
+            updateForestHUD();
+        }
+
+        function updateForestHUD() {
+            const hud = document.getElementById('forest-hearts-hud');
+            if (hud) {
+                hud.textContent = `❤ ${collectedHeartsCount}/5`;
+            }
+        }
+
+        function setPokeDialog(speaker, icon, text) {
+            document.getElementById('poke-dialog-speaker').textContent = speaker;
+            document.getElementById('poke-dialog-icon').textContent = icon;
+            document.getElementById('poke-dialog-text').textContent = text;
+        }
+
+        function closePokeDialog() {
+            sfxClick();
+            setPokeDialog(
+                "PISTA DEL BOSQUE",
+                "🌲",
+                collectedHeartsCount < 5
+                    ? `Explora con Tukis. Te faltan ${5 - collectedHeartsCount} corazones para abrir el cofre del norte.`
+                    : "¡Ya tienes los 5 corazones! Ve al cofre dorado arriba junto a Piwicho y presiona 'A'."
+            );
+        }
+
+        function openForestGame() {
+            sfxUnlockQuestion();
+            showScreen('screen-minigame');
+
+            // Posiciones iniciales
+            mayaPlayer.x = 184;
+            mayaPlayer.y = 216;
+            mayaPlayer.dir = 'down';
+            tukisDog.x = 152;
+            tukisDog.y = 218;
+            tukisDog.dir = 'right';
+            tukisDog.heartTimer = 70;
+
+            stepHistory = [];
+            for (let i = 0; i < 18; i++) {
+                stepHistory.push({
+                    x: mayaPlayer.x - i * 1.8,
+                    y: mayaPlayer.y,
+                    dir: 'right'
+                });
+            }
+
+            if (forestHearts.length === 0) {
+                initForestCollectibles();
+            }
+
+            setPokeDialog("TUKIS", "🐶", CONFIG.frasesBosque.bienvenida);
+
+            if (!forestRunning) {
+                forestRunning = true;
+                forestLoop();
+            }
+        }
+
+        function exitForestGame() {
+            sfxClick();
+            forestRunning = false;
+            if (forestAnimId) cancelAnimationFrame(forestAnimId);
+            keysPressed.up = keysPressed.down = keysPressed.left = keysPressed.right = false;
+            showScreen('screen-victory');
+        }
+
+        // Controles de Teclado y D-Pad Táctil
+        window.addEventListener('keydown', (e) => {
+            if (!forestRunning) return;
+            const k = e.key.toLowerCase();
+            if (k === 'arrowup' || k === 'w') { keysPressed.up = true; e.preventDefault(); }
+            if (k === 'arrowdown' || k === 's') { keysPressed.down = true; e.preventDefault(); }
+            if (k === 'arrowleft' || k === 'a') { keysPressed.left = true; e.preventDefault(); }
+            if (k === 'arrowright' || k === 'd') { keysPressed.right = true; e.preventDefault(); }
+            if (k === ' ' || k === 'enter' || k === 'e') {
+                e.preventDefault();
+                interactInForest();
+            }
+        });
+
+        window.addEventListener('keyup', (e) => {
+            if (!forestRunning) return;
+            const k = e.key.toLowerCase();
+            if (k === 'arrowup' || k === 'w') keysPressed.up = false;
+            if (k === 'arrowdown' || k === 's') keysPressed.down = false;
+            if (k === 'arrowleft' || k === 'a') keysPressed.left = false;
+            if (k === 'arrowright' || k === 'd') keysPressed.right = false;
+        });
+
+        function bindDpadButton(btnId, dirKey) {
+            const btn = document.getElementById(btnId);
+            if (!btn) return;
+            const startMove = (e) => { e.preventDefault(); keysPressed[dirKey] = true; };
+            const stopMove = (e) => { e.preventDefault(); keysPressed[dirKey] = false; };
+
+            btn.addEventListener('mousedown', startMove);
+            btn.addEventListener('mouseup', stopMove);
+            btn.addEventListener('mouseleave', stopMove);
+            btn.addEventListener('touchstart', startMove, { passive: false });
+            btn.addEventListener('touchend', stopMove, { passive: false });
+            btn.addEventListener('touchcancel', stopMove, { passive: false });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            bindDpadButton('dpad-up', 'up');
+            bindDpadButton('dpad-down', 'down');
+            bindDpadButton('dpad-left', 'left');
+            bindDpadButton('dpad-right', 'right');
+        });
+
+        function callTukisBark() {
+            if (!forestRunning) return;
+            sfxBark();
+            tukisDog.heartTimer = 95;
+            mayaPlayer.emotionTimer = 70;
+            const frases = CONFIG.frasesBosque.acariciarTukis;
+            const fraseRandom = frases[Math.floor(Math.random() * frases.length)];
+            setPokeDialog("TUKIS (TU GUARDIÁN)", "🐶", fraseRandom);
+        }
+
+        function interactInForest() {
+            if (!forestRunning) return;
+
+            const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+
+            // 1. ¿Está cerca del Cofre Secreto?
+            if (dist(mayaPlayer, secretChest) < 38) {
+                if (collectedHeartsCount >= 5) {
+                    secretChest.opened = true;
+                    sfxVictoryFanfare();
+                    launchMoreFireworks();
+                    tukisDog.heartTimer = 120;
+                    setPokeDialog("COFRE REAL DESBLOQUEADO", "👑", CONFIG.frasesBosque.cofreAbierto);
+                } else {
+                    sfxClick();
+                    setPokeDialog("COFRE MISTERIOSO", "🎁", CONFIG.frasesBosque.cofreCerrado);
+                }
+                return;
+            }
+
+            // 2. ¿Está cerca de Piwicho?
+            if (dist(mayaPlayer, piwichoNPC) < 42) {
+                sfxUnlockQuestion();
+                mayaPlayer.emotionTimer = 90;
+                setPokeDialog("PIWICHO", "💖", CONFIG.frasesBosque.hablarPiwicho);
+                return;
+            }
+
+            // 3. ¿Está cerca del Michi atigrado de la foto?
+            if (dist(mayaPlayer, michiNPC) < 42) {
+                sfxMeow();
+                michiNPC.heartTimer = 85;
+                setPokeDialog("MICHI", "🐱", CONFIG.frasesBosque.hablarMichi);
+                return;
+            }
+
+            // 4. ¿Está cerca del cartel de madera?
+            if (dist(mayaPlayer, signPost) < 38) {
+                sfxClick();
+                setPokeDialog("CARTEL DE MADERA", "📜", CONFIG.frasesBosque.cartelBosque);
+                return;
+            }
+
+            // 5. Por defecto: Acariciar a Tukis (que siempre está a su lado)
+            callTukisBark();
+        }
+
+        function canMoveTo(nx, ny) {
+            // Límites del mapa
+            if (nx < 26 || nx > 356 || ny < 32 || ny > 264) return false;
+
+            // Río horizontal en Y: 108..126, excepto en el puente central (X: 162..222)
+            if (ny > 102 && ny < 130) {
+                if (nx < 164 || nx > 220) return false;
+            }
+
+            // Colisión con árboles
+            for (const tree of forestTrees) {
+                const tx = tree.x + 12;
+                const ty = tree.y + 16;
+                if (Math.hypot(nx - tx, ny - ty) < 18) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function updateForestGame() {
+            forestTick++;
+
+            let dx = 0;
+            let dy = 0;
+            if (keysPressed.up) { dy -= mayaPlayer.speed; mayaPlayer.dir = 'up'; }
+            if (keysPressed.down) { dy += mayaPlayer.speed; mayaPlayer.dir = 'down'; }
+            if (keysPressed.left) { dx -= mayaPlayer.speed; mayaPlayer.dir = 'left'; }
+            if (keysPressed.right) { dx += mayaPlayer.speed; mayaPlayer.dir = 'right'; }
+
+            if (dx !== 0 && dy !== 0) {
+                dx *= 0.7071;
+                dy *= 0.7071;
+            }
+
+            mayaPlayer.moving = false;
+
+            if (dx !== 0 && canMoveTo(mayaPlayer.x + dx, mayaPlayer.y)) {
+                mayaPlayer.x += dx;
+                mayaPlayer.moving = true;
+            }
+            if (dy !== 0 && canMoveTo(mayaPlayer.x, mayaPlayer.y + dy)) {
+                mayaPlayer.y += dy;
+                mayaPlayer.moving = true;
+            }
+
+            if (mayaPlayer.moving) {
+                mayaPlayer.walkFrame += 0.18;
+
+                // Guardar huella para que Tukis siga el recorrido exacto como en Pokémon
+                stepHistory.unshift({
+                    x: mayaPlayer.x,
+                    y: mayaPlayer.y,
+                    dir: mayaPlayer.dir
+                });
+                if (stepHistory.length > 22) {
+                    const targetStep = stepHistory.pop();
+                    const dtx = targetStep.x - tukisDog.x;
+                    const dty = targetStep.y - tukisDog.y;
+                    if (Math.abs(dtx) > Math.abs(dty)) {
+                        tukisDog.dir = dtx > 0 ? 'right' : 'left';
+                    } else if (Math.abs(dty) > 0.2) {
+                        tukisDog.dir = dty > 0 ? 'down' : 'up';
+                    }
+                    tukisDog.x = targetStep.x;
+                    tukisDog.y = targetStep.y;
+                    tukisDog.moving = true;
+                    tukisDog.walkFrame += 0.22;
+                }
+            } else {
+                tukisDog.moving = false;
+            }
+
+            // Verificar si Maya recoge algún corazón brillante del bosque
+            forestHearts.forEach(h => {
+                if (!h.collected && Math.hypot(mayaPlayer.x - h.x, mayaPlayer.y - h.y) < 18) {
+                    h.collected = true;
+                    collectedHeartsCount++;
+                    sfxPickupHeart();
+                    tukisDog.heartTimer = 60;
+                    updateForestHUD();
+
+                    if (collectedHeartsCount === 5) {
+                        setPokeDialog("¡MISIÓN COMPLETADA!", "🌟", "¡Recogiste los 5 corazones con Tukis! Ve al cofre dorado en la parte superior junto a Piwicho.");
+                    } else {
+                        setPokeDialog("CORAZÓN ENCONTRADO", "💖", `¡Encontraste un corazon! (${collectedHeartsCount}/5)`);
+                    }
+                }
+            });
+
+            if (tukisDog.heartTimer > 0) tukisDog.heartTimer--;
+            if (mayaPlayer.emotionTimer > 0) mayaPlayer.emotionTimer--;
+            if (michiNPC.heartTimer > 0) michiNPC.heartTimer--;
+        }
+
+        /* =========================================================================
+           DIBUJO PIXEL-ART PERSONALIZADO (MAYA, TUKIS EL BÓXER, MICHI Y PIWICHO)
+           ========================================================================= */
+        function drawPixelTree(x, y) {
+            // Sombra
+            pCtx.fillStyle = 'rgba(0,0,0,0.35)';
+            pCtx.fillRect(x + 2, y + 22, 20, 6);
+            // Tronco
+            pCtx.fillStyle = '#4e342e';
+            pCtx.fillRect(x + 8, y + 16, 8, 9);
+            // Copa de pino estilo Pokémon
+            pCtx.fillStyle = '#0d3b26';
+            pCtx.fillRect(x + 2, y + 10, 20, 8);
+            pCtx.fillStyle = '#155d3b';
+            pCtx.fillRect(x + 4, y + 5, 16, 7);
+            pCtx.fillStyle = '#228b57';
+            pCtx.fillRect(x + 6, y + 1, 12, 5);
+            // Brillo hoja
+            pCtx.fillStyle = '#4ade80';
+            pCtx.fillRect(x + 8, y + 2, 4, 2);
+        }
+
+        // SPRITE DE MAYA (Basado en la imagen subida: cabello castaño con mechones laterales,
+        // lentes rosados/lila, ojos verdes, ropita oscura/vino y su corazón rojo flotando arriba)
+        function drawMayaSprite(x, y, dir, walkFrame, moving) {
+            const px = Math.floor(x - 12);
+            const py = Math.floor(y - 20);
+            const bob = moving ? (Math.floor(walkFrame) % 2 === 0 ? -1 : 1) : 0;
+            const footOffset = moving ? (Math.floor(walkFrame) % 2 === 0 ? 2 : -2) : 0;
+
+            // Sombra en el pasto
+            pCtx.fillStyle = 'rgba(0, 0, 0, 0.45)';
+            pCtx.fillRect(px + 4, py + 23, 16, 4);
+
+            // Corazoncito rojo flotante sobre la cabeza de Maya (como en su imagen)
+            const heartFloat = Math.floor(Math.sin(forestTick * 0.1) * 2);
+            pCtx.fillStyle = '#000000';
+            pCtx.fillRect(px + 8, py - 8 + heartFloat, 8, 6);
+            pCtx.fillStyle = '#ff2a55';
+            pCtx.fillRect(px + 9, py - 7 + heartFloat, 2, 2);
+            pCtx.fillRect(px + 13, py - 7 + heartFloat, 2, 2);
+            pCtx.fillRect(px + 9, py - 5 + heartFloat, 6, 2);
+            pCtx.fillRect(px + 11, py - 3 + heartFloat, 2, 2);
+
+            // Cabello castaño (Base trasera)
+            pCtx.fillStyle = '#4a3219'; // Borde oscuro
+            pCtx.fillRect(px + 3, py + 1 + bob, 18, 15);
+            pCtx.fillStyle = '#8d6236'; // Castaño medio
+            pCtx.fillRect(px + 4, py + 2 + bob, 16, 13);
+            pCtx.fillStyle = '#a87948'; // Brillo superior del cabello
+            pCtx.fillRect(px + 6, py + 3 + bob, 12, 3);
+
+            // Mechoncitos laterales característicos de su avatar
+            pCtx.fillStyle = '#8d6236';
+            pCtx.fillRect(px + 1, py + 8 + bob, 3, 4);
+            pCtx.fillRect(px + 20, py + 8 + bob, 3, 4);
+            pCtx.fillRect(px + 3, py + 12 + bob, 3, 6);
+            pCtx.fillRect(px + 18, py + 12 + bob, 3, 6);
+
+            if (dir !== 'up') {
+                // Rostro
+                pCtx.fillStyle = '#ffd6c4';
+                pCtx.fillRect(px + 6, py + 7 + bob, 12, 8);
+
+                // Flequillo castaño
+                pCtx.fillStyle = '#754f29';
+                pCtx.fillRect(px + 6, py + 6 + bob, 12, 2);
+                pCtx.fillRect(px + 11, py + 8 + bob, 2, 1);
+
+                // Ojos verdes grandes
+                pCtx.fillStyle = '#2d5a27';
+                pCtx.fillRect(px + 7, py + 10 + bob, 3, 3);
+                pCtx.fillRect(px + 14, py + 10 + bob, 3, 3);
+                // Brillo blanco en los ojos
+                pCtx.fillStyle = '#ffffff';
+                pCtx.fillRect(px + 7, py + 10 + bob, 1, 1);
+                pCtx.fillRect(px + 14, py + 10 + bob, 1, 1);
+
+                // Lentes rosados / lila (como en su sprite)
+                pCtx.fillStyle = '#d884b8';
+                pCtx.fillRect(px + 6, py + 9 + bob, 5, 1);
+                pCtx.fillRect(px + 13, py + 9 + bob, 5, 1);
+                pCtx.fillRect(px + 6, py + 13 + bob, 5, 1);
+                pCtx.fillRect(px + 13, py + 13 + bob, 5, 1);
+                pCtx.fillRect(px + 11, py + 10 + bob, 2, 1); // Puente de los lentes
+            } else {
+                // Vista de espaldas (todo cabello castaño)
+                pCtx.fillStyle = '#754f29';
+                pCtx.fillRect(px + 5, py + 6 + bob, 14, 10);
+            }
+
+            // Ropita oscura / vino tinto con centro negro (igual a su sprite)
+            pCtx.fillStyle = '#4a121b'; // Vino oscuro en mangas
+            pCtx.fillRect(px + 6, py + 15 + bob, 12, 6);
+            pCtx.fillStyle = '#141118'; // Centro negro
+            pCtx.fillRect(px + 9, py + 15 + bob, 6, 6);
+
+            // Manitas
+            pCtx.fillStyle = '#ffd6c4';
+            pCtx.fillRect(px + 6, py + 18 + bob, 2, 2);
+            pCtx.fillRect(px + 16, py + 18 + bob, 2, 2);
+
+            // Zapatitos animados al caminar
+            pCtx.fillStyle = '#260a10';
+            pCtx.fillRect(px + 7, py + 21 + (footOffset > 0 ? 1 : 0), 4, 3);
+            pCtx.fillRect(px + 13, py + 21 + (footOffset < 0 ? 1 : 0), 4, 3);
+        }
+
+        // SPRITE DE TUKIS (Perro Bóxer de la foto: pelaje marrón leonado, pecho blanco,
+        // máscara/hocico negro característico y orejitas caídas oscuras)
+        function drawTukisSprite(x, y, dir, walkFrame, moving) {
+            const px = Math.floor(x - 11);
+            const py = Math.floor(y - 16);
+            const bounce = moving ? (Math.floor(walkFrame) % 2 === 0 ? -1 : 1) : 0;
+            const tailWag = Math.floor(Math.sin(forestTick * 0.35) * 2);
+
+            // Sombra
+            pCtx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+            pCtx.fillRect(px + 3, py + 17, 16, 4);
+
+            // Cuerpo leonado/marrón de Bóxer
+            pCtx.fillStyle = '#b86f32';
+            pCtx.fillRect(px + 4, py + 8 + bounce, 14, 7);
+            pCtx.fillStyle = '#d18441';
+            pCtx.fillRect(px + 5, py + 8 + bounce, 12, 5);
+
+            // Pecho blanco característico de Tukis (como se ve en la foto)
+            pCtx.fillStyle = '#ffffff';
+            if (dir === 'left') {
+                pCtx.fillRect(px + 4, py + 10 + bounce, 5, 5);
+            } else if (dir === 'right') {
+                pCtx.fillRect(px + 13, py + 10 + bounce, 5, 5);
+            } else {
+                pCtx.fillRect(px + 7, py + 10 + bounce, 8, 5);
+            }
+
+            // Colita moviéndose feliz
+            pCtx.fillStyle = '#8f511e';
+            if (dir === 'left') {
+                pCtx.fillRect(px + 18, py + 6 + tailWag, 3, 3);
+            } else {
+                pCtx.fillRect(px + 1, py + 6 + tailWag, 3, 3);
+            }
+
+            // Cabeza de Tukis
+            const headX = dir === 'left' ? px + 2 : (dir === 'right' ? px + 8 : px + 5);
+            pCtx.fillStyle = '#c87a38';
+            pCtx.fillRect(headX, py + 1 + bounce, 12, 9);
+
+            // Orejitas caídas oscuras de Bóxer
+            pCtx.fillStyle = '#231f1d';
+            pCtx.fillRect(headX - 2, py + 2 + bounce, 3, 5);
+            pCtx.fillRect(headX + 11, py + 2 + bounce, 3, 5);
+
+            if (dir !== 'up') {
+                // Ojos expresivos
+                pCtx.fillStyle = '#14110f';
+                pCtx.fillRect(headX + 2, py + 4 + bounce, 2, 2);
+                pCtx.fillRect(headX + 8, py + 4 + bounce, 2, 2);
+                pCtx.fillStyle = '#ffffff';
+                pCtx.fillRect(headX + 2, py + 4 + bounce, 1, 1);
+                pCtx.fillRect(headX + 8, py + 4 + bounce, 1, 1);
+
+                // Hocico / Máscara negra de Bóxer (rasgo clave de Tukis)
+                pCtx.fillStyle = '#1c1917';
+                pCtx.fillRect(headX + 2, py + 6 + bounce, 8, 4);
+                // Nariz brillante
+                pCtx.fillStyle = '#000000';
+                pCtx.fillRect(headX + 5, py + 6 + bounce, 2, 2);
+                // Lengüita rosada cuando está feliz
+                if (tukisDog.heartTimer > 0) {
+                    pCtx.fillStyle = '#ff4d88';
+                    pCtx.fillRect(headX + 5, py + 10 + bounce, 2, 2);
+                }
+            }
+
+            // Patitas con puntitas claras
+            const legShift = moving ? (Math.floor(walkFrame) % 2 === 0 ? 1 : -1) : 0;
+            pCtx.fillStyle = '#9c5a25';
+            pCtx.fillRect(px + 5, py + 15 + (legShift > 0 ? 1 : 0), 3, 3);
+            pCtx.fillRect(px + 14, py + 15 + (legShift < 0 ? 1 : 0), 3, 3);
+
+            // Si Tukis está feliz o fue acariciado, mostrar corazoncito encima
+            if (tukisDog.heartTimer > 0) {
+                pCtx.fillStyle = '#ff2a85';
+                pCtx.fillRect(px + 8, py - 7, 6, 5);
+                pCtx.fillStyle = '#ffffff';
+                pCtx.fillRect(px + 9, py - 6, 1, 1);
+            }
+        }
+
+        // SPRITE DEL GATITO ATIGRADO GRIS (El michi que sale acostado con Tukis en la foto)
+        function drawTabbyKitten(x, y) {
+            const px = Math.floor(x - 8);
+            const py = Math.floor(y - 8);
+
+            // Mantita celeste debajo (como la sábana de la foto)
+            pCtx.fillStyle = '#5da9c7';
+            pCtx.fillRect(px - 6, py + 4, 28, 12);
+            pCtx.fillStyle = '#87cbe6';
+            pCtx.fillRect(px - 4, py + 6, 24, 8);
+
+            // Cuerpo gris atigrado
+            pCtx.fillStyle = '#7c8288';
+            pCtx.fillRect(px + 2, py + 4, 12, 7);
+            // Rayitas oscuras de michi atigrado
+            pCtx.fillStyle = '#3f4448';
+            pCtx.fillRect(px + 5, py + 4, 2, 5);
+            pCtx.fillRect(px + 9, py + 4, 2, 5);
+
+            // Cabecita con orejas puntiagudas
+            pCtx.fillStyle = '#8d949b';
+            pCtx.fillRect(px, py + 1, 8, 6);
+            pCtx.fillStyle = '#3f4448';
+            pCtx.fillRect(px, py - 1, 2, 2);
+            pCtx.fillRect(px + 6, py - 1, 2, 2);
+
+            // Ojitos tiernos
+            pCtx.fillStyle = '#1b1b1b';
+            pCtx.fillRect(px + 1, py + 3, 2, 2);
+            pCtx.fillRect(px + 5, py + 3, 2, 2);
+
+            if (michiNPC.heartTimer > 0) {
+                pCtx.fillStyle = '#00f0ff';
+                pCtx.font = '8px "Press Start 2P"';
+                pCtx.fillText('MIAU❤', px - 6, py - 4);
+            }
+        }
+
+        // SPRITE DE PIWICHO (Esperando a Maya en el claro norte del bosque)
+        function drawPiwichoSprite(x, y) {
+            const px = Math.floor(x - 10);
+            const py = Math.floor(y - 18);
+            const bob = Math.floor(Math.sin(forestTick * 0.08));
+
+            // Sombra
+            pCtx.fillStyle = 'rgba(0,0,0,0.4)';
+            pCtx.fillRect(px + 3, py + 21, 14, 4);
+
+            // Cabello oscuro
+            pCtx.fillStyle = '#1c1924';
+            pCtx.fillRect(px + 4, py + 2 + bob, 12, 7);
+
+            // Rostro
+            pCtx.fillStyle = '#f5cba7';
+            pCtx.fillRect(px + 5, py + 7 + bob, 10, 6);
+
+            // Ojos
+            pCtx.fillStyle = '#000000';
+            pCtx.fillRect(px + 6, py + 9 + bob, 2, 2);
+            pCtx.fillRect(px + 12, py + 9 + bob, 2, 2);
+
+            // Casaca / Hoodie color cian neón
+            pCtx.fillStyle = '#008899';
+            pCtx.fillRect(px + 4, py + 13 + bob, 12, 6);
+            pCtx.fillStyle = '#00f0ff';
+            pCtx.fillRect(px + 7, py + 13 + bob, 6, 6);
+
+            // Pantalón y zapatillas
+            pCtx.fillStyle = '#222034';
+            pCtx.fillRect(px + 5, py + 19, 4, 3);
+            pCtx.fillRect(px + 11, py + 19, 4, 3);
+
+            // Etiqueta sobre Piwicho
+            pCtx.fillStyle = '#00f0ff';
+            pCtx.font = '6px "Press Start 2P"';
+            pCtx.fillText('PIWICHO', px - 10, py - 3);
+        }
+
+        function renderForestGame() {
+            // 1. Pasto base del bosque estilo Pokémon
+            pCtx.fillStyle = '#152e1f';
+            pCtx.fillRect(0, 0, pokeCanvas.width, pokeCanvas.height);
+
+            // Cuadrícula sutil de pasto y florecitas
+            for (let gx = 24; gx < 350; gx += 32) {
+                for (let gy = 24; gy < 260; gy += 32) {
+                    pCtx.fillStyle = '#1c3d29';
+                    pCtx.fillRect(gx, gy, 6, 3);
+                    if ((gx + gy) % 64 === 0) {
+                        pCtx.fillStyle = '#ff2a85';
+                        pCtx.fillRect(gx + 10, gy + 12, 3, 3);
+                        pCtx.fillStyle = '#ffd700';
+                        pCtx.fillRect(gx + 11, gy + 13, 1, 1);
+                    }
+                }
+            }
+
+            // 2. Caminos de tierra del bosque
+            pCtx.fillStyle = '#6e5036';
+            pCtx.fillRect(172, 42, 40, 225); // Camino vertical principal
+            pCtx.fillRect(85, 165, 215, 28); // Camino horizontal hacia el picnic del michi
+            pCtx.fillStyle = '#876547';
+            pCtx.fillRect(176, 45, 32, 218);
+            pCtx.fillRect(88, 168, 208, 22);
+
+            // 3. Río brillante y puente de madera
+            pCtx.fillStyle = '#0c4a6e';
+            pCtx.fillRect(0, 108, pokeCanvas.width, 20);
+            pCtx.fillStyle = '#0284c7';
+            pCtx.fillRect(0, 111, pokeCanvas.width, 14);
+            // Brillos del agua animados
+            const waveShift = Math.floor(forestTick * 0.4) % 24;
+            pCtx.fillStyle = '#38bdf8';
+            for (let wx = waveShift; wx < pokeCanvas.width; wx += 28) {
+                pCtx.fillRect(wx, 115, 8, 2);
+                pCtx.fillRect(wx + 12, 120, 6, 2);
+            }
+
+            // Puente de madera
+            pCtx.fillStyle = '#5c3a21';
+            pCtx.fillRect(166, 104, 52, 28);
+            pCtx.fillStyle = '#8c5832';
+            for (let bx = 170; bx < 216; bx += 8) {
+                pCtx.fillRect(bx, 106, 6, 24);
+            }
+
+            // 4. Cartel de madera
+            pCtx.fillStyle = '#4e342e';
+            pCtx.fillRect(signPost.x - 2, signPost.y + 4, 4, 8);
+            pCtx.fillStyle = '#a16207';
+            pCtx.fillRect(signPost.x - 9, signPost.y - 6, 18, 12);
+            pCtx.fillStyle = '#fef08a';
+            pCtx.fillRect(signPost.x - 7, signPost.y - 3, 14, 2);
+            pCtx.fillRect(signPost.x - 7, signPost.y + 1, 10, 2);
+
+            // 5. Cofre Secreto en el norte
+            pCtx.fillStyle = secretChest.opened ? '#00ff66' : '#ffd700';
+            pCtx.fillRect(secretChest.x - 9, secretChest.y - 7, 18, 14);
+            pCtx.fillStyle = '#78350f';
+            pCtx.fillRect(secretChest.x - 7, secretChest.y - 5, 14, 10);
+            pCtx.fillStyle = '#ffd700';
+            pCtx.fillRect(secretChest.x - 2, secretChest.y - 1, 4, 4);
+
+            // 6. Corazones coleccionables en el suelo
+            const pulse = Math.floor(Math.sin(forestTick * 0.12) * 2);
+            forestHearts.forEach(h => {
+                if (!h.collected) {
+                    pCtx.fillStyle = 'rgba(255, 42, 133, 0.35)';
+                    pCtx.fillRect(h.x - 7, h.y - 7 + pulse, 14, 14);
+                    drawMiniPixelHeart(pCtx, h.x - 6, h.y - 5 + pulse, '#ff2a85');
+                }
+            });
+
+            // 7. Dibujar al Michi atigrado y a Piwicho
+            drawTabbyKitten(michiNPC.x, michiNPC.y);
+            drawPiwichoSprite(piwichoNPC.x, piwichoNPC.y);
+
+            // 8. Dibujar a Tukis y a Maya ordenados según su posición Y (profundidad 2D)
+            if (tukisDog.y < mayaPlayer.y) {
+                drawTukisSprite(tukisDog.x, tukisDog.y, tukisDog.dir, tukisDog.walkFrame, tukisDog.moving);
+                drawMayaSprite(mayaPlayer.x, mayaPlayer.y, mayaPlayer.dir, mayaPlayer.walkFrame, mayaPlayer.moving);
+            } else {
+                drawMayaSprite(mayaPlayer.x, mayaPlayer.y, mayaPlayer.dir, mayaPlayer.walkFrame, mayaPlayer.moving);
+                drawTukisSprite(tukisDog.x, tukisDog.y, tukisDog.dir, tukisDog.walkFrame, tukisDog.moving);
+            }
+
+            // 9. Dibujar los árboles del bosque
+            forestTrees.forEach(t => drawPixelTree(t.x, t.y));
+
+            // 10. Luciérnagas brillantes flotando en la noche del bosque
+            fireflies.forEach(f => {
+                f.x += f.speedX;
+                f.y += f.speedY;
+                if (f.x < 20 || f.x > 360) f.speedX *= -1;
+                if (f.y < 20 || f.y > 265) f.speedY *= -1;
+                const glow = 0.4 + 0.6 * Math.abs(Math.sin(forestTick * 0.05 + f.phase));
+                pCtx.fillStyle = `rgba(255, 230, 100, ${glow})`;
+                pCtx.fillRect(Math.floor(f.x), Math.floor(f.y), 2, 2);
+            });
+        }
+
+        function forestLoop() {
+            if (!forestRunning) return;
+            updateForestGame();
+            renderForestGame();
+            forestAnimId = requestAnimationFrame(forestLoop);
         }
     </script>
 </body>
